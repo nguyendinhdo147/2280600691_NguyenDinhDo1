@@ -1,0 +1,10 @@
+﻿@using _2280600691_NguyenDinhDo.Models
+@model Category
+
+<h2>Delete Category</h2>
+<p>Are you sure you want to delete the category: <strong>@Model.Name</strong>?</p>
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Confirm Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

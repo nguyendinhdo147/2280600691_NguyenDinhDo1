@@ -1,0 +1,42 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model IEnumerable<_2280600691_NguyenDinhDo.Models.Category>
+
+<div class="container my-4">
+    <h2 class="text-center text-primary mb-4">Danh sách danh mục</h2>
+    <table class="table table-hover table-bordered shadow-sm rounded-4">
+        <thead class="table-dark">
+            <tr class="text-center align-middle">
+                <th>Id</th>
+                <th>Tên danh mục</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var category in Model)
+            {
+                    <tr>
+                        <td class="text-center align-middle">@category.Id</td>
+                        <td class="align-middle">@category.Name</td>
+                        <td class="text-center align-middle">
+                            <a asp-action="Display" asp-route-id="@category.Id" class="btn btn-info btn-sm mx-1">Chi tiết</a>
+                            <a asp-action="Update" asp-route-id="@category.Id" class="btn btn-warning btn-sm mx-1">Sửa</a>
+                            <a asp-action="Delete" asp-route-id="@category.Id" class="btn btn-danger btn-sm mx-1">Xóa</a>
+                        </td>
+                    </tr>
+            }
+            else
+            {
+                <tr>
+                    <td colspan="3" class="text-center text-muted">Không có danh mục nào để hiển thị</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="text-end">
+        <a asp-action="Add" class="btn btn-success btn-lg fw-bold mt-3">Thêm danh mục mới</a>
+    </div>
+</div>

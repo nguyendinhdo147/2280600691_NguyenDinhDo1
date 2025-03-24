@@ -1,0 +1,18 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model _2280600691_NguyenDinhDo.Models.Category
+
+<h2>Thêm danh mục mới</h2>
+
+<form asp-action="Add" method="post">
+    <div class="form-group">
+        <label for="Name">Tên danh mục:</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Thêm</button>
+    <a asp-action="Index" class="btn btn-secondary">Trở về</a>
+</form>

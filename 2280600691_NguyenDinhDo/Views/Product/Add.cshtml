@@ -1,0 +1,49 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model _2280600691_NguyenDinhDo.Models.Product
+@using Microsoft.AspNetCore.Mvc.Rendering
+@{ 
+    ViewData["Title"] = "Add Product"; 
+}
+
+<div class="container">
+    <h2 class="text-center text-primary my-4">@ViewData["Title"]</h2>
+
+    <form asp-action="Add" method="post" enctype="multipart/form-data" class="shadow-lg p-4 rounded-4 bg-light">
+        <!-- Product Name -->
+        <div class="form-floating mb-3">
+            <input asp-for="Name" class="form-control" placeholder="Product Name" />
+            <label asp-for="Name">Product Name</label>
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <!-- Product Price -->
+        <div class="form-floating mb-3">
+            <input asp-for="Price" class="form-control" placeholder="Product Price" />
+            <label asp-for="Price">Price</label>
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+        <!-- Product Description -->
+        <div class="form-floating mb-3">
+            <textarea asp-for="Description" class="form-control" placeholder="Product Description" style="height: 150px;"></textarea>
+            <label asp-for="Description">Description</label>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <!-- Product Category -->
+        <div class="form-floating mb-3">
+            <select asp-for="CategoryId" asp-items="ViewBag.Categories" class="form-select">
+                <option disabled selected>Select Category</option>
+            </select>
+            <label asp-for="CategoryId">Category</label>
+        </div>
+        <!-- Product Image -->
+        <div class="form-group mb-3">
+            <label asp-for="ImageUrl" class="form-label">Product Image</label>
+            <input type="file" asp-for="ImageUrl" class="form-control" />
+        </div>
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary w-100 fw-bold py-2">Add Product</button>
+    </form>
+</div>

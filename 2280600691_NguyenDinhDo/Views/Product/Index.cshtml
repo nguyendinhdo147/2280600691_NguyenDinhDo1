@@ -1,0 +1,36 @@
+﻿@model IEnumerable<_2280600691_NguyenDinhDo.Models.Product>
+
+<div class="container my-4">
+    <h2 class="text-center text-primary mb-4">Products</h2>
+    <table class="table table-hover table-bordered shadow-sm rounded-4">
+        <thead class="table-dark">
+            <tr class="text-center">
+                <th>Name</th>
+                <th>Price</th>
+                <th>Description</th>
+                <th>Image</th>
+                <th>Category</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                    <tr>
+                        <td>@product.Name</td>
+                        <td>@String.Format("{0:C}", product.Price)</td>
+                        <td>@product.Description</td>
+                        <td class="text-center">
+                            <img src="@product.ImageUrl" alt="Image of @product.Name" class="img-thumbnail" style="width:100px; height:auto;" />
+                        </td>
+                        <td>@product.Category?.Name</td>
+                        <td class="text-center">
+                            <a asp-action="Display" asp-route-id="@product.Id" class="btn btn-info btn-sm mx-1">View</a>
+                            <a asp-action="Update" asp-route-id="@product.Id" class="btn btn-warning btn-sm mx-1">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@product.Id" class="btn btn-danger btn-sm mx-1">Delete</a>
+                        </td>
+                    </tr>
+            }
+        </tbody>
+    </table>
+</div>
