@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace _2280600691_NguyenDinhDo.Controllers
 {
+
     public class CategoriesController : Controller
     {
         private readonly IProductRepository _productRepository;

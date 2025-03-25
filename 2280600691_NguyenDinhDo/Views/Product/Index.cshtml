@@ -1,36 +1,74 @@
 ﻿@model IEnumerable<_2280600691_NguyenDinhDo.Models.Product>
-
-<div class="container my-4">
-    <h2 class="text-center text-primary mb-4">Products</h2>
-    <table class="table table-hover table-bordered shadow-sm rounded-4">
-        <thead class="table-dark">
-            <tr class="text-center">
-                <th>Name</th>
-                <th>Price</th>
-                <th>Description</th>
-                <th>Image</th>
-                <th>Category</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
+@{
+    int numOfQuantity = 1;
+}
+<div class="container my-5">
+    <h2 class="text-center text-primary mb-4">Our Products</h2>
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+        @if (Model != null && Model.Any())
+        {
             @foreach (var product in Model)
             {
-                    <tr>
-                        <td>@product.Name</td>
-                        <td>@String.Format("{0:C}", product.Price)</td>
-                        <td>@product.Description</td>
-                        <td class="text-center">
-                            <img src="@product.ImageUrl" alt="Image of @product.Name" class="img-thumbnail" style="width:100px; height:auto;" />
-                        </td>
-                        <td>@product.Category?.Name</td>
-                        <td class="text-center">
-                            <a asp-action="Display" asp-route-id="@product.Id" class="btn btn-info btn-sm mx-1">View</a>
-                            <a asp-action="Update" asp-route-id="@product.Id" class="btn btn-warning btn-sm mx-1">Edit</a>
-                            <a asp-action="Delete" asp-route-id="@product.Id" class="btn btn-danger btn-sm mx-1">Delete</a>
-                        </td>
-                    </tr>
+                        <div class="col mb-5">
+                            <div class="card h-100 shadow border-0 position-relative" style="overflow:hidden;">
+                                <!-- Image Container -->
+                                <div class="image-container">
+                                    <img src="@product.ImageUrl" class="card-img-top img-fluid" alt="Image of @product.Name" style="height: 300px; object-fit: cover;" />
+                                    <!-- Hover Effects -->
+                                    <div class="hover-overlay d-flex flex-column justify-content-center align-items-center">
+                                        <a asp-action="Display" asp-route-id="@product.Id" class="btn btn-light mb-2">
+                                            <i class="bi-eye me-1"></i> View Details
+                                        </a>
+                                        <button class="btn btn-outline-dark add-to-cart" data-product-id="@product.Id" data-quantity="@numOfQuantity">
+                                            <i class="bi-cart-fill me-1"></i> Add to Cart 
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- Product Info -->
+                                <div class="card-body text-center">
+                                    <h5 class="card-title fw-bold">@product.Name</h5>
+                                    <p class="card-text text-muted">@product.Description</p>
+                                    <p class="text-success fw-bold">@String.Format("{0:C}", product.Price)</p>
+                                    <p class="badge bg-secondary">@product.Category?.Name</p>
+                                </div>
+                                <!-- Admin-only Buttons -->
+                        @if (User.IsInRole("Admin"))
+                        {
+                                        <div class="card-footer d-flex justify-content-center">
+                                            <a asp-action="Update" asp-route-id="@product.Id" class="btn btn-warning btn-sm mx-1">Edit</a>
+                                            <a asp-action="Delete" asp-route-id="@product.Id" class="btn btn-danger btn-sm mx-1">Delete</a>
+                                        </div>
+                        }
+                            </div>
+                        </div>
             }
-        </tbody>
-    </table>
+        }
+        else
+        {
+                <p class="text-center text-muted">No products available at the moment.</p>
+        }
+    </div>
 </div>
+
+@section Scripts {
+        <script>
+            $(document).ready(function () {
+                // Loại bỏ sự kiện click trùng trước khi bind
+                $('.add-to-cart').off('click').on('click', function () {
+                    var productId = $(this).data('product-id');
+                    var quantity = $(this).data('quantity');
+
+                    $.ajax({
+                        url: '@Url.Action("AddToCart", "ShoppingCart")',
+                        type: 'POST',
+                        data: { productId: productId, quantity: quantity },
+                        success: function (response) {
+                            if (response.success) {
+                                $('#cart-count').text(response.cartCount);
+                            }
+                        }
+                    });
+                });
+            });
+        </script>
+}

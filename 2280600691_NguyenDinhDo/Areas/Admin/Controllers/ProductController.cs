@@ -24,14 +24,28 @@ namespace _2280600691_NguyenDinhDo.Areas.Admin.Controllers
         // Action Index: Hiển thị danh sách sản phẩm
         public async Task<IActionResult> Index()
         {
-            var products = await _productRepository.GetAllAsync(); // Lấy tất cả sản phẩm
-            return View(products); // Truyền danh sách sản phẩm vào View
+            try
+            {
+                var products = await _productRepository.GetAllAsync();
+                if (products == null || !products.Any())
+                {
+                    ViewData["Message"] = "Không có sản phẩm nào để hiển thị.";
+                }
+                return View(products ?? Enumerable.Empty<Product>());
+            }
+            catch (Exception ex)
+            {
+                // Ghi log lỗi
+                ModelState.AddModelError(string.Empty, "Đã xảy ra lỗi khi tải sản phẩm.");
+                return View(Enumerable.Empty<Product>());
+            }
         }
 
-        // Action Add: Hiển thị form thêm sản phẩm
+
         public async Task<IActionResult> Add()
         {
-            ViewBag.Categories = await _categoryRepository.GetAllAsync(); // Lấy danh mục để hiển thị
+            var categories = await _categoryRepository.GetAllAsync();
+            ViewBag.Categories = categories ?? Enumerable.Empty<Category>(); // Lấy danh mục để hiển thị
             return View();
         }
 
@@ -45,7 +59,8 @@ namespace _2280600691_NguyenDinhDo.Areas.Admin.Controllers
                 await _productRepository.AddAsync(product); // Thêm sản phẩm mới
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.Categories = await _categoryRepository.GetAllAsync();
+            var categories = await _categoryRepository.GetAllAsync();
+            ViewBag.Categories = categories ?? Enumerable.Empty<Category>();
             return View(product);
         }
 
@@ -57,7 +72,8 @@ namespace _2280600691_NguyenDinhDo.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewBag.Categories = await _categoryRepository.GetAllAsync(); // Lấy danh mục
+            var categories = await _categoryRepository.GetAllAsync();
+            ViewBag.Categories = categories ?? Enumerable.Empty<Category>(); // Lấy danh mục
             return View(product);
         }
 
@@ -71,7 +87,8 @@ namespace _2280600691_NguyenDinhDo.Areas.Admin.Controllers
                 await _productRepository.UpdateAsync(product); // Cập nhật sản phẩm
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.Categories = await _categoryRepository.GetAllAsync();
+            var categories = await _categoryRepository.GetAllAsync();
+            ViewBag.Categories = categories ?? Enumerable.Empty<Category>();
             return View(product);
         }
 

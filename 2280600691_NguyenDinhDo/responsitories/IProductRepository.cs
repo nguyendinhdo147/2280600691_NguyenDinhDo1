@@ -10,4 +10,5 @@ namespace _2280600691_NguyenDinhDo.Repositories
         Task UpdateAsync(Product product);
         Task DeleteAsync(int id);
     }
+
 }

@@ -11,17 +11,17 @@
         @{
             if (User.Identity?.IsAuthenticated ?? false)
             {
-                        <form class="d-flex justify-content-center" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
-                            <button type="submit" class="btn btn-danger btn-lg fw-bold">
-                                Log Out
-                            </button>
-                        </form>
+                <form class="d-flex justify-content-center" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Product/Index", new { area = "" })" method="post">
+                    <button type="submit" class="btn btn-danger btn-lg fw-bold">
+                        Log Out
+                    </button>
+                </form>
             }
             else
             {
-                        <p class="text-success mt-3">
-                            You have successfully logged out of the application.
-                        </p>
+                <p class="text-success mt-3">
+                    You have successfully logged out of the application.
+                </p>
             }
         }
     </header>

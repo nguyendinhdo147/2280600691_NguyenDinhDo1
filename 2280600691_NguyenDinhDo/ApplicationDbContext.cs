@@ -4,12 +4,15 @@ using Microsoft.EntityFrameworkCore;
 
 public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 {
-    public
-   ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-    : base(options)
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        : base(options)
     {
     }
+
     public DbSet<Product> Products { get; set; }
     public DbSet<Category> Categories { get; set; }
-    // Các DbSet khác nếu cần
+    public DbSet<ProductImage> ProductImages { get; set; }
+    public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+    public DbSet<Order> Orders { get; set; }
+    public DbSet<OrderDetail> OrderDetails { get; set; }
 }

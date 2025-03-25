@@ -1,0 +1,44 @@
+﻿@model _2280600691_NguyenDinhDo.Models.ShoppingCart
+
+<h2 class="text-center text-primary fw-bold my-4">Your Shopping Cart</h2>
+
+<table class="table table-hover shadow-sm rounded">
+    <thead class="table-dark">
+        <tr>
+            <th>Product</th>
+            <th class="text-center">Quantity</th>
+            <th class="text-end">Price</th>
+            <th class="text-end">Total</th>
+            <th class="text-center">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Items)
+        {
+                <tr class="align-middle">
+                    <td>@item.Name</td>
+                    <td class="text-center">@item.Quantity</td>
+                    <td class="text-end">@String.Format("{0:C}", item.Price)</td>
+                    <td class="text-end">@String.Format("{0:C}", item.Price * item.Quantity)</td>
+                    <td class="text-center">
+                        <a asp-action="RemoveFromCart" asp-route-productId="@item.ProductId" class="btn btn-danger btn-sm shadow-sm rounded">
+                            <i class="bi bi-trash"></i> Remove
+                        </a>
+                    </td>
+                </tr>
+        }
+        @if (!Model.Items.Any())
+        {
+                <tr>
+                    <td colspan="5" class="text-center text-muted">Your cart is empty.</td>
+                </tr>
+        }
+    </tbody>
+</table>
+
+<div class="d-flex justify-content-between align-items-center mt-4">
+    <a asp-action="Checkout" class="btn btn-success px-4 py-2 shadow rounded">
+        <i class="bi bi-credit-card-fill"></i> Proceed to Checkout
+    </a>
+    <h4 class="text-primary fw-bold">Grand Total: @String.Format("{0:C}", Model.Items.Sum(item => item.Price * item.Quantity))</h4>
+</div>

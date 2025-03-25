@@ -6,7 +6,7 @@
     <title>@ViewData["Title"] - _2280600691_NguyenDinhDo</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/_2280600691_NguyenDinhDo.styles.css" asp-append-version="true" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <style>
         footer {
             position: fixed;
@@ -41,12 +41,22 @@
                                     <a class="nav-link text-dark" asp-area="cus" asp-controller="Product" asp-action="Add">Add Product</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="Admin" asp-controller="Categories" asp-action="Index">Categories</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
                                 </li>
                         }
                         <li class="nav-item">
                             <a class="nav-link text-dark" href="#">Contact</a>
                         </li>
+                        <!-- Nút Cart -->
+                        <li class="nav-item position-relative">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="ShoppingCart" asp-action="Index">
+                                <i class="bi bi-cart"></i> Cart
+                                <span id="cart-count" class="badge bg-danger position-absolute top-0 start-100 translate-middle">
+                                    @ViewBag.CartCount 
+                                </span>
+                            </a>
+                        </li>
+
                         <!-- Login and Register Partial -->
                         <partial name="_LoginPartial" />
                     </ul>
@@ -73,6 +83,43 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.11/signalr.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Kết nối với SignalR Hub
+            const connection = new signalR.HubConnectionBuilder()
+                .withUrl("/cartHub")
+                .build();
+
+            connection.start().then(function () {
+                console.log("SignalR Connected.");
+            }).catch(function (err) {
+                return console.error(err.toString());
+            });
+
+            // Lắng nghe sự kiện cập nhật giỏ hàng
+            connection.on("UpdateCartCount", function (cartCount) {
+                $('#cart-count').text(cartCount);
+            });
+
+            // Xử lý sự kiện click nút Add to Cart
+            $('.add-to-cart').click(function () {
+                var productId = $(this).data('product-id');
+                var quantity = $(this).data('quantity');
+
+                $.ajax({
+                    url: '@Url.Action("AddToCart", "ShoppingCart")',
+                    type: 'POST',
+                    data: { productId: productId, quantity: quantity },
+                    success: function (response) {
+                        if (response.success) {
+                            $('#cart-count').text(response.cartCount);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
